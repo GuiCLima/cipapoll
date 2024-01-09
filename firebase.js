@@ -4,7 +4,7 @@ import {
     getFirestore,
     collection,
     getDocs,
-    addDoc,
+    updateDoc,
     doc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -21,10 +21,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function find(cpf) {
+export async function find(cpf) {
     const querySnapshot = await getDocs(collection(db, 'colaboradores'));
     let index = 0;
-
 
     return await new Promise((resolve, reject) => {
         querySnapshot.forEach((doc) => {
@@ -43,23 +42,42 @@ async function find(cpf) {
     });
 }
 
+export async function getCandidates(type) {
+    const querySnapshot = await getDocs(collection(db, 'candidato'));
+    let index = 0;
 
+    return await new Promise((resolve) => {
+        querySnapshot.forEach((doc) => {
+            if(doc.id === type) {
+                resolve(doc.data());
+            }
 
-export async function hasVoted(cpf) {
-    const user = (await find(cpf)).data;
+            if(querySnapshot.size - 1 === index) {
+                resolve(undefined);
+            }
+            index++;
+        })
+    })
+}
 
-    if (!user) {
-        return undefined;
-    }
+export async function updateUserVote(id) {
+    await updateDoc(doc(db, "colaboradores", id), {
+        hasVoted: true
+    });
+}
+
+export async function updateCandidateVote(id, key, previousValue) {
+    console.log(previousValue);
+    await updateDoc(doc(db, "candidato", id), {
+        [key]: previousValue + 1
+    })
+}
+
+export async function hasVoted(user) {
     return user.hasVoted;
 }
 
-export async function isCozil(cpf) {
-    const user = await (await find(cpf)).data;
-
-    if (!user) {
-        return undefined;
-    }
+export async function isCozil(user) {
     return user.isCozil;
 }
 
