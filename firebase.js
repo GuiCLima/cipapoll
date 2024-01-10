@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
 import {
     getFirestore,
@@ -14,7 +15,8 @@ const firebaseConfig = {
     projectId: "cozilpoll",
     storageBucket: "cozilpoll.appspot.com",
     messagingSenderId: "190251371277",
-    appId: "1:190251371277:web:48909657d5a6d95de27e44"
+    appId: "1:190251371277:web:48909657d5a6d95de27e44",
+    measurementId: "G-48VZK20X8K"
 };
 
 // Initialize Firebase
@@ -25,7 +27,7 @@ export async function find(cpf) {
     const querySnapshot = await getDocs(collection(db, 'colaboradores'));
     let index = 0;
 
-    return await new Promise((resolve, reject) => {
+    return await new Promise((resolve) => {
         querySnapshot.forEach((doc) => {
             if (doc.data().cpf === cpf) {
                 resolve({
@@ -67,20 +69,19 @@ export async function updateUserVote(id) {
 }
 
 export async function updateCandidateVote(id, key, previousValue) {
+    console.log(id);
+    console.log(key);
     console.log(previousValue);
+    
     await updateDoc(doc(db, "candidato", id), {
         [key]: previousValue + 1
     })
 }
 
 export async function hasVoted(user) {
-    return user.hasVoted;
+    return user.data.hasVoted;
 }
 
 export async function isCozil(user) {
-    return user.isCozil;
-}
-
-function vote(cpf, vote) {
-
+    return user.data.isCozil;
 }

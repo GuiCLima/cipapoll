@@ -138,6 +138,11 @@ body {
     font-size: 17px;
 }
 
+#vote:disabled, #vote[disabled] {
+    border: #969898;
+    background-color: #969898;
+}
+
 #end {
     height: 60px;
     width: 180px;

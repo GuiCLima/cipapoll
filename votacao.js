@@ -2,7 +2,9 @@ import { hasVoted, find, updateUserVote, getCandidates, updateCandidateVote } fr
 
 let currentPosition = 0;
 let selectedCandidate;
-let candidatesList = {};
+
+let candidatesList = {};  
+let isCozil = true;
 
 window.onload = function() { 
     setupButtons();
@@ -53,6 +55,8 @@ async function loadCandidates() {
     const user = await find(cpf);
     let candidates = {};
 
+    wrapper.innerHTML = "";
+    
     if(user.data.isCozil) {
         candidates = await getCandidates("votosCOZIL");
 
@@ -68,7 +72,6 @@ async function loadCandidates() {
     }
 
     setupCandidates();
-    console.log("#1:", candidates);
     return {
         isCozil: user.data.isCozil,
         candidates: candidates
@@ -89,7 +92,7 @@ function buildCandidateElement(candidateName) {
 }
 
 function setupCandidates() {
-    let candidateElements = document.getElementsByClassName("candidate");
+    const candidateElements = document.getElementsByClassName("candidate");
 
     for(let i=0; i<candidateElements.length; i++) {
         candidateElements[i].addEventListener('click', selectCandidate);
@@ -97,13 +100,14 @@ function setupCandidates() {
 }
 
 function selectCandidate(e) {
-    let candidateElements = document.getElementsByClassName("candidate");
+    const candidateElements = document.getElementsByClassName("candidate");
     selectedCandidate = e.target;
 
     for(let i=0; i<candidateElements.length; i++) {
         candidateElements[i].classList.remove("selected");
     }
 
+    enableButton();
     selectedCandidate.classList.add("selected");
 }
 
@@ -118,11 +122,9 @@ function clearCandidate(e) {
 
 async function moveCarousel() {
     const carousel = document.getElementById("carousel");
-    let isCozil = true;
-
+  
     if(currentPosition === 0 && await verifyCPF()) {
         const candidatesObject = (await loadCandidates());
-        console.log("#4:", candidatesObject);
 
         candidatesList = candidatesObject.candidates;
         isCozil = candidatesObject.isCozil;
@@ -132,8 +134,7 @@ async function moveCarousel() {
         return;
     }
 
-    if(currentPosition === 1 && selectedCandidate != undefined) {
-        console.log("#2:", candidatesList);
+    if(currentPosition === 1 && selectedCandidate != undefined && confirmVote()) {
         vote(candidatesList, isCozil);
         carousel.style.marginLeft = '-200vw';
         currentPosition++;
@@ -141,6 +142,7 @@ async function moveCarousel() {
     }
     if(currentPosition === 2) {
         clearCPF();
+        disableButton();
         clearCandidate();
         carousel.style.marginLeft = '0vw';
         currentPosition = 0;
@@ -168,22 +170,31 @@ async function verifyCPF() {
     return true;
 }
 
+
 async function vote(candidates, isCozil) {
     const _selectedCandidate = selectedCandidate.firstChild.innerHTML;
     const cpf = getCPF();
     const user = await find(cpf);
 
     updateUserVote(user.id);
-    console.log("selected candidate:", _selectedCandidate);
-    console.log("#3:", candidates);
+    console.log(isCozil);
     if(isCozil) {
-        console.log("candidate value:", candidates[_selectedCandidate])
+        console.log("ISCOZIL?")
         updateCandidateVote('votosCOZIL', _selectedCandidate, candidates[_selectedCandidate]);
     } else {
-        console.log("candidate value:", candidates[_selectedCandidate])
         updateCandidateVote('votosPROINOX', _selectedCandidate, candidates[_selectedCandidate]);
     }
 
+}
+
+function confirmVote() {
+    const _selectedCandidate = selectedCandidate.firstChild.innerHTML;
+
+    if(confirm("Deseja votar em " + _selectedCandidate + "?")) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function getCPF() {
@@ -206,6 +217,16 @@ function enableErrorMessage(message) {
 function disableErrorMessage() {
     const errorMessage = document.getElementById("error-message");
     errorMessage.style.color = "rgba(0, 0, 0, 0)";
+}
+
+function enableButton() {
+    const voteButton = document.getElementById("vote");
+    voteButton.removeAttribute('disabled');
+}
+
+function disableButton() {
+    const voteButton = document.getElementById("vote");
+    voteButton.disabled = false;
 }
 
 
