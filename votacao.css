@@ -28,7 +28,7 @@ body {
 }
 
 #title-wrapper {
-    height: 25%;
+    height: 18%;
     width: 100%;
     background-color: #AB2229;
     color: #fff;
@@ -45,8 +45,8 @@ body {
 }
 
 #carousel {
-    height: 70%;
-    width: 200%;
+    height: 78%;
+    width: 300%;
     margin-left: none;
 
     display: flex;
@@ -116,7 +116,7 @@ body {
     outline: none;
 }
 
-#next-button {
+.button {
     height: 42px;
     width: 42px;
     border-radius: 45px;
@@ -128,9 +128,27 @@ body {
     color: #fff;
 }
 
-#next-button:hover {
-    border: #00309D;
-    background-color: #00309D;
+.button:hover {
+    border: black;
+    background-color: black;
+}
+
+#vote {
+    width: 84px;
+    font-size: 17px;
+}
+
+#vote:disabled, #vote[disabled] {
+    border: #969898;
+    background-color: #969898;
+}
+
+#end {
+    height: 60px;
+    width: 180px;
+    margin: 20px;
+
+    font-size: 20px;
 }
 
 #content-wrapper-two {
@@ -142,4 +160,86 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+#candidate-wrapper {
+    height: 100%;
+    width: 80%;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.candidate {
+    height: 220px;
+    width: 160px;
+    margin: 20px;
+    
+    border: 2px solid #969898;
+    border-radius: 20px;
+
+    position: relative;
+
+    overflow: visible;
+}
+
+.candidate:hover {
+    border: 2px solid black;
+}
+
+.candidate > .tooltip-text {
+    width: 140px;
+    border-radius: 6px;
+    padding: 5px 10px;
+
+    background-color: black;
+    color: #fff;
+    text-align: center;
+
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+
+    top: 90%;
+    left: 50%;
+    margin-left: -70px;
+}
+
+
+.candidate:hover > .tooltip-text {
+    visibility: visible;
+}
+
+.candidate.selected {
+    border: 2px solid #AB2229;
+}
+
+.candidate.selected:hover {
+    border: 2px solid #AB2229;
+}
+
+.candidate.selected > .tooltip-text {
+    background-color: #AB2229;
+    visibility: visible;
+}
+
+
+#content-wrapper-three {
+    height: 100%;
+    width: 50%;
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#content-wrapper-three > h1 {
+    font-family: 'Great Vibes', cursive;
+    color: #969898;
+    font-size: 100px;
 }

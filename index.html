@@ -14,14 +14,21 @@
                 <div>
                     <p id="subtitle">Insira seu CPF</p>
                     <div id="field-wrapper">
-                        <input id="text-field" type="text" placeholder="000.000.000-00">
-                        <button id="next-button">&#x21e8;</button>
+                        <input id="text-field" type="text" placeholder="___.___.___-__" data-slots="_">
+                        <button class="button" id="next">&#x21e8;</button>
                     </div>
                     <p id="error-message">message</p>
                 </div>
             </div>
             <div id="content-wrapper-two">
-            
+                <div id="candidate-wrapper">
+                    <!-- CANDIDATOS AQUI -->
+                </div>
+                <button class="button" id="vote" disabled>Votar</button>
+            </div>
+            <div id="content-wrapper-three">
+                <h1>Voto realizado com sucesso!</h1>
+                <button class="button" id="end">Voltar ao inicio</button>
             </div>
         </div>
 
