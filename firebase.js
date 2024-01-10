@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 
 import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { apiKey, appId, authDomain, messagingSenderId, projectId, storageBucket } from "./config";
+import { apiKey, appId, authDomain, messagingSenderId, projectId, storageBucket } from "./config.js";
 
 const firebaseConfig = {
     apiKey: apiKey,
